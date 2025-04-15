@@ -8,52 +8,71 @@
 import SwiftUI
 
 struct TodayView: View {
-    @StateObject var todoVM = TodoViewModel()
+    @StateObject var todayVM = TodayViewModel()
+    @State private var showingAddTodo = false
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                HStack {
-                    Text(convertDate())
-                    Spacer()
-                }
-                
-                if todoVM.todos.isEmpty {
+            ZStack(alignment: .bottomTrailing) {
+                VStack(spacing: 30) {
                     HStack {
-                        Spacer()
-                        
-                        Text("오늘 할 일이 없습니다.")
-                            .foregroundColor(.gray)
-                        
+                        Text(convertDate())
                         Spacer()
                     }
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.lightGray))
-                    )
-                } else {
-                    List {
-                        ForEach(todoVM.todos) { todo in
-                            Button(action: {
-                                todoVM.toggleTodoCompletion(id: todo.id)
-                            }) {
-                                HStack {
-                                    Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
-                                        .foregroundStyle(Color(.gray))
-                                    Text(todo.title)
-                                        .strikethrough(todo.isCompleted)
-                                }
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .listRowInsets(EdgeInsets())
+                    
+                    if todayVM.todos.isEmpty {
+                        HStack {
+                            Spacer()
+                            
+                            Text("오늘 할 일이 없습니다.")
+                                .foregroundColor(.gray)
+                            
+                            Spacer()
                         }
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(.lightGray))
+                        )
+                    } else {
+                        List {
+                            ForEach(todayVM.todos) { todo in
+                                Button(action: {
+                                    todayVM.toggleTodoCompletion(id: todo.id)
+                                }) {
+                                    HStack {
+                                        Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
+                                            .foregroundStyle(Color(.gray))
+                                        Text(todo.title)
+                                            .strikethrough(todo.isCompleted)
+                                    }
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .listRowInsets(EdgeInsets())
+                            }
+                        }
+                        .listStyle(.plain)
                     }
-                    .listStyle(.plain)
                 }
+                .padding()
+                .navigationTitle("오늘 할 일")
+                
+                Button(action: {
+                    showingAddTodo = true
+                }) {
+                    Image(systemName: "plus")
+                        .foregroundStyle(Color(.white))
+                        .padding()
+                        .background(Color(.gray))
+                        .clipShape(Circle())
+                        .shadow(radius: 4)
+                }
+                .padding()
             }
-            .padding()
-            .navigationTitle("오늘 할 일")
+        }
+        .sheet(isPresented: $showingAddTodo) {
+            AddTodoView()
+                .environmentObject(todayVM)
         }
     }
 }

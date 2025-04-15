@@ -1,5 +1,5 @@
 //
-//  TodoViewModel.swift
+//  TodayViewModel.swift
 //  SimpleList
 //
 //  Created by Nam Hoon Jeong on 4/15/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TodoViewModel: ObservableObject {
+class TodayViewModel: ObservableObject {
     @Published var todos: [TodoItem] = [] {
         didSet {
             saveTodos()
@@ -25,6 +25,11 @@ class TodoViewModel: ObservableObject {
             todos[index].isCompleted.toggle()
             todos = todos
         }
+    }
+    
+    func addTodo(title: String) {
+        let newTodo = TodoItem(title: title, isCompleted: false)
+        todos.append(newTodo)
     }
     
     func saveTodos() {
