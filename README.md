@@ -19,7 +19,7 @@ SwiftUI로 만든 미니멀하고 실용적인 할 일 관리 앱입니다.
 - `Swift 5.9`
 - `SwiftUI`
 - `MVVM` 아키텍처
-- `UserDefaults` -> Realm으로 변경예정 (데이터 저장소)
+- ~~`UserDefaults`~~ -> `Realm`으로 변경 (데이터 저장소)
 
 ---
 
