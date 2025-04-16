@@ -6,15 +6,14 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct TodoItem: Identifiable, Codable {
-    let id: UUID
-    var title: String
-    var isCompleted: Bool
+class TodoItem: Object, Identifiable {
+    @objc dynamic var id: String = UUID().uuidString
+    @objc dynamic var title: String = ""
+    @objc dynamic var isCompleted: Bool = false
     
-    init(id: UUID = UUID(), title: String, isCompleted: Bool) {
-        self.id = id
-        self.title = title
-        self.isCompleted = isCompleted
+    override static func primaryKey() -> String? {
+        "id"
     }
 }
