@@ -12,6 +12,7 @@ class TodoItem: Object, Identifiable {
     @objc dynamic var id: String = UUID().uuidString
     @objc dynamic var title: String = ""
     @objc dynamic var isCompleted: Bool = false
+    @objc dynamic var date: Date = Date()
     
     override static func primaryKey() -> String? {
         "id"

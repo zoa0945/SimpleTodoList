@@ -26,9 +26,10 @@ class TodayViewModel: ObservableObject {
         }
     }
     
-    func addTodo(title: String) {
+    func addTodo(title: String, date: Date = Date()) {
         let newTodo = TodoItem()
         newTodo.title = title
+        newTodo.date = date
         try! realm.write {
             realm.add(newTodo)
         }
@@ -36,7 +37,14 @@ class TodayViewModel: ObservableObject {
     }
     
     func loadTodos() {
-        let results = realm.objects(TodoItem.self).sorted(byKeyPath: "title", ascending: true)
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "ko-KR")
+        let now = Date()
+        let startOfDay = calendar.startOfDay(for: now)
+        guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else { return }
+        let results = realm.objects(TodoItem.self)
+            .filter("date >= %@ AND date < %@", startOfDay, endOfDay)
+            .sorted(byKeyPath: "date", ascending: true)
         todos = Array(results)
     }
     
