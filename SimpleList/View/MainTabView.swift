@@ -15,7 +15,7 @@ struct MainTabView: View {
                     Label("오늘", systemImage: "calendar")
                 }
             
-            AllTaskView()
+            AllTodoView()
                 .tabItem {
                     Label("전체 보기", systemImage: "list.bullet")
                 }
