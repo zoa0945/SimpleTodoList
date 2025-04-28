@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddTodoView: View {
-    @EnvironmentObject var todayVM: TodayViewModel
+    @EnvironmentObject private var todoVM: TodoViewModel
     @Environment(\.dismiss) var dismiss
     @State private var newTodoTitle: String = ""
     @State private var selectedDate: Date = Date()
@@ -26,7 +26,8 @@ struct AddTodoView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("추가") {
                         if !newTodoTitle.trimmingCharacters(in: .whitespaces).isEmpty {
-                            todayVM.addTodo(title: newTodoTitle, date: selectedDate)
+                            todoVM.addTodo(title: newTodoTitle, date: selectedDate)
+                            todoVM.loadTodos()
                             dismiss()
                         }
                     }

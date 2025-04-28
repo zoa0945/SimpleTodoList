@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct TodayView: View {
-    @StateObject var todayVM = TodayViewModel()
+    @EnvironmentObject private var todoVM: TodoViewModel
     @State private var showingAddTodo = false
     @State private var editingTodo: TodoItem?
-    @State private var newTitle: String = ""
     
     var body: some View {
         NavigationView {
@@ -22,7 +21,7 @@ struct TodayView: View {
                         Spacer()
                     }
                     
-                    if todayVM.todos.isEmpty {
+                    if todoVM.todos.isEmpty {
                         VStack {
                             HStack {
                                 Spacer()
@@ -42,37 +41,15 @@ struct TodayView: View {
                         }
                     } else {
                         List {
-                            ForEach(todayVM.todos) { todo in
-                                Button(action: {
-                                    todayVM.toggleTodoCompletion(id: todo.id)
-                                }) {
-                                    HStack {
-                                        Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
-                                            .foregroundStyle(Color(.gray))
-                                        
-                                        Text(todo.title)
-                                            .strikethrough(todo.isCompleted)
-                                        
-                                        Spacer()
-                                    }
+                            ForEach(todoVM.todos) { todo in
+                                TodoRowView(todo: todo) {
+                                    todoVM.toggleTodoCompletion(todo: todo)
+                                } onDelete: {
+                                    todoVM.deleteTodos(todo: todo)
+                                } onEdit: {
+                                    editingTodo = todo
                                 }
-                                .buttonStyle(PlainButtonStyle())
-                                .listRowInsets(EdgeInsets())
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                    Button(role: .destructive, action: {
-                                        todayVM.deleteTodos(id: todo.id)
-                                    }) {
-                                        Label("삭제", systemImage: "trash")
-                                    }
-                                    
-                                    Button(action: {
-                                        editingTodo = todo
-                                        newTitle = todo.title
-                                    }) {
-                                        Label("수정", systemImage: "pencil")
-                                    }
-                                    .tint(.blue)
-                                }
+
                             }
                         }
                         .listStyle(.plain)
@@ -87,7 +64,7 @@ struct TodayView: View {
                     Image(systemName: "plus")
                         .foregroundStyle(Color(.white))
                         .padding()
-                        .background(Color(.gray))
+                        .background(Color(.blue))
                         .clipShape(Circle())
                         .shadow(radius: 4)
                 }
@@ -96,25 +73,14 @@ struct TodayView: View {
         }
         .sheet(isPresented: $showingAddTodo) {
             AddTodoView()
-                .environmentObject(todayVM)
+                .environmentObject(todoVM)
         }
-        .alert("할 일 수정", isPresented: Binding(get: {
-            editingTodo != nil
-        }, set: { newValue in
-            if !newValue { editingTodo = nil }
-        })) {
-            TextField("수정할 내용", text: $newTitle)
-            Button("저장", action: {
-                if let todo = editingTodo {
-                    todayVM.updateTodo(id: todo.id, newTitle: newTitle)
-                    editingTodo = nil
-                }
-            })
-            Button("취소", role: .cancel) {
-                editingTodo = nil
-            }
-        } message: {
-            Text("할 일을 수정합니다.")
+        .sheet(item: $editingTodo, onDismiss: {
+            editingTodo = nil
+            todoVM.loadTodos()
+        }) { todo in
+            EditingTodoView(todo: todo)
+                .environmentObject(todoVM)
         }
     }
 }

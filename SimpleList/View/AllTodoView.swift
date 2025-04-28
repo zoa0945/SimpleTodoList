@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct AllTodoView: View {
-    @StateObject private var AllTodoVM = AllTodoViewModel()
+    @EnvironmentObject private var todoVM: TodoViewModel
+    @State private var editingTodo: TodoItem?
     
     private var groupedTodos: [(Date, [TodoItem])] {
-        Dictionary(grouping: AllTodoVM.todos) { todo in
-            Calendar.current.startOfDay(for: todo.date)
+        Dictionary(grouping: todoVM.allTodos) { todo in
+            Calendar.current.startOfDay(for: todo.date ?? Date())
         }
         .map { ($0.key, $0.value) }
         .sorted { $0.0 < $1.0 }
@@ -26,6 +27,7 @@ struct AllTodoView: View {
                     Spacer()
                 }
                 .padding()
+                .navigationTitle("전체 보기")
                 
                 if groupedTodos.isEmpty {
                     VStack {
@@ -45,24 +47,34 @@ struct AllTodoView: View {
                         
                         Spacer()
                     }
+                    .padding()
                 } else {
                     List {
                         ForEach(groupedTodos, id: \.0) { date, todos in
                             Section(header: Text(convertDate(date)).font(.headline)) {
                                 ForEach(todos) { todo in
-                                    Text(todo.title)
-                                        .strikethrough(todo.isCompleted)
-                                        .padding(.vertical, 4)
+                                    TodoRowView(todo: todo) {
+                                        todoVM.toggleTodoCompletion(todo: todo)
+                                    } onDelete: {
+                                        todoVM.deleteTodos(todo: todo)
+                                    } onEdit: {
+                                        editingTodo = todo
+                                    }
+
                                 }
                             }
+                            
                         }
                     }
                     .listStyle(.plain)
-                    .navigationTitle("전체 보기")
                     .onAppear {
-                        AllTodoVM.loadAllTodos()
+                        todoVM.loadAllTodos()
                     }
                 }
+            }
+            .sheet(item: $editingTodo) { todo in
+                EditingTodoView(todo: todo)
+                    .environmentObject(todoVM)
             }
         }
     }
