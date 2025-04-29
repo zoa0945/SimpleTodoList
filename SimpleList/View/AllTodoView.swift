@@ -21,61 +21,53 @@ struct AllTodoView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                HStack {
-                    Text("모든 할 일을 확인 할 수 있습니다.")
-                    Spacer()
-                }
-                .padding()
-                .navigationTitle("전체 보기")
-                
-                if groupedTodos.isEmpty {
-                    VStack {
-                        HStack {
-                            Spacer()
-                            
-                            Text("아직 할일이 없어요.")
-                                .foregroundColor(.gray)
-                            
-                            Spacer()
-                        }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.lightGray))
-                        )
+            if groupedTodos.isEmpty {
+                VStack {
+                    HStack {
+                        Spacer()
+                        
+                        Text("아직 할일이 없어요.")
+                            .foregroundColor(.gray)
                         
                         Spacer()
                     }
                     .padding()
-                } else {
-                    List {
-                        ForEach(groupedTodos, id: \.0) { date, todos in
-                            Section(header: Text(convertDate(date)).font(.headline)) {
-                                ForEach(todos) { todo in
-                                    TodoRowView(todo: todo) {
-                                        todoVM.toggleTodoCompletion(todo: todo)
-                                    } onDelete: {
-                                        todoVM.deleteTodos(todo: todo)
-                                    } onEdit: {
-                                        editingTodo = todo
-                                    }
-
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.lightGray))
+                    )
+                    
+                    Spacer()
+                }
+                .padding()
+            } else {
+                List {
+                    ForEach(groupedTodos, id: \.0) { date, todos in
+                        Section(header: Text(convertDate(date)).font(.headline)) {
+                            ForEach(todos) { todo in
+                                TodoRowView(todo: todo) {
+                                    todoVM.toggleTodoCompletion(todo: todo)
+                                } onDelete: {
+                                    todoVM.deleteTodos(todo: todo)
+                                } onEdit: {
+                                    editingTodo = todo
                                 }
+
                             }
-                            
                         }
-                    }
-                    .listStyle(.plain)
-                    .onAppear {
-                        todoVM.loadAllTodos()
+                        
                     }
                 }
+                .listStyle(.plain)
+                .onAppear {
+                    todoVM.loadAllTodos()
+                }
+                .navigationTitle("전체 보기")
             }
-            .sheet(item: $editingTodo) { todo in
-                EditingTodoView(todo: todo)
-                    .environmentObject(todoVM)
-            }
+        }
+        .sheet(item: $editingTodo) { todo in
+            EditingTodoView(todo: todo)
+                .environmentObject(todoVM)
         }
     }
     
