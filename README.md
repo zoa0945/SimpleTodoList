@@ -27,16 +27,19 @@ SwiftUI로 만든 미니멀하고 실용적인 할 일 관리 앱입니다.
 
 ```
 📂 TodoApp
-├── Models/
-│   └── TodoItem.swift
 ├── ViewModels/
 │   └── TodoViewModel.swift
 ├── Views/
+│   ├── MainTabView.swift
 │   ├── TodayView.swift
 │   ├── AddTodoView.swift
 │   ├── AllTasksView.swift
 │   ├── CalendarView.swift
-│   └── SettingsView.swift
+│   ├── SettingsView.swift
+│   ├── EditingView.swift
+│   └── TodoRowView.swift
+├── Model/
+│   └── TodoModel
 └── TodoApp.swift
 ```
 
