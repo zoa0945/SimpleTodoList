@@ -40,6 +40,7 @@ struct AllTodoView: View {
                     Spacer()
                 }
                 .padding()
+                .navigationTitle("전체 보기")
             } else {
                 List {
                     ForEach(groupedTodos, id: \.0) { date, todos in
