@@ -12,10 +12,11 @@ struct SimpleListApp: App {
     let persistenceController = PersistenceController.shared
     @StateObject private var todoVM = TodoViewModel(context: PersistenceController.shared.container.viewContext)
     @AppStorage("selectedTheme") private var selectedTheme: String = "시스템"
+    @AppStorage("defaultView") private var defaultView: String = "오늘"
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            MainTabView(defaultView: "오늘")
                 .preferredColorScheme(themeScheme(for: selectedTheme))
                 .environmentObject(todoVM)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
