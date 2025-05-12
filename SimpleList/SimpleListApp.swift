@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 @main
 struct SimpleListApp: App {
@@ -13,6 +14,10 @@ struct SimpleListApp: App {
     @StateObject private var todoVM = TodoViewModel(context: PersistenceController.shared.container.viewContext)
     @AppStorage("selectedTheme") private var selectedTheme: String = "시스템"
     @AppStorage("defaultView") private var defaultView: String = "오늘"
+    
+    init() {
+        MobileAds.shared.start(completionHandler: nil)
+    }
     
     var body: some Scene {
         WindowGroup {

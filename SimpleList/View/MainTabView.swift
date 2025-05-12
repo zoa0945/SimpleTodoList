@@ -23,29 +23,34 @@ struct MainTabView: View {
     }
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            TodayView()
-                .tabItem {
-                    Label("오늘", systemImage: "calendar")
-                }
-                .tag(0)
+        VStack {
+            TabView(selection: $selectedTab) {
+                TodayView()
+                    .tabItem {
+                        Label("오늘", systemImage: "calendar")
+                    }
+                    .tag(0)
+                
+                AllTodoView()
+                    .tabItem {
+                        Label("전체 보기", systemImage: "list.bullet")
+                    }
+                    .tag(1)
+                
+                CalendarView()
+                    .tabItem {
+                        Label("일정", systemImage: "calendar.circle")
+                    }
+                    .tag(2)
+                
+                SettingView()
+                    .tabItem {
+                        Label("설정", systemImage: "gear")
+                    }
+            }
             
-            AllTodoView()
-                .tabItem {
-                    Label("전체 보기", systemImage: "list.bullet")
-                }
-                .tag(1)
-            
-            CalendarView()
-                .tabItem {
-                    Label("일정", systemImage: "calendar.circle")
-                }
-                .tag(2)
-            
-            SettingView()
-                .tabItem {
-                    Label("설정", systemImage: "gear")
-                }
+            BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
+                .frame(height: 50)
         }
     }
 }
