@@ -15,30 +15,28 @@ struct TodayView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
-                VStack(spacing: 30) {
+                VStack(spacing: 0) {
                     HStack {
                         Text(convertDate())
                         Spacer()
                     }
+                    .padding()
                     
                     if todoVM.todos.isEmpty {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                
-                                Text("오늘 할 일이 없습니다.")
-                                    .foregroundColor(.gray)
-                                
-                                Spacer()
-                            }
-                            .padding()
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color(.lightGray))
-                            )
+                        HStack {
+                            Spacer()
+                            
+                            Text("오늘 할 일이 없습니다.")
+                                .foregroundColor(.gray)
+                                .padding()
                             
                             Spacer()
                         }
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(.lightGray))
+                        )
+                        .padding()
                     } else {
                         List {
                             ForEach(todoVM.todos) { todo in
@@ -54,8 +52,8 @@ struct TodayView: View {
                         }
                         .listStyle(.plain)
                     }
+                    Spacer()
                 }
-                .padding()
                 .navigationTitle("오늘 할 일")
                 
                 Button(action: {

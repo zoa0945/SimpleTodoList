@@ -21,7 +21,7 @@ struct SimpleListApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(defaultView: "오늘")
+            MainTabView(defaultView: defaultView)
                 .preferredColorScheme(themeScheme(for: selectedTheme))
                 .environmentObject(todoVM)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
