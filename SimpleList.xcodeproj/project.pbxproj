@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		0F1476EB2DD1FEB20085BC1D /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 0F1476EA2DD1FEB20085BC1D /* GoogleMobileAds */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		0FAB11EE2DB25C02008410D1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -53,7 +49,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F1476EB2DD1FEB20085BC1D /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +92,6 @@
 			);
 			name = SimpleList;
 			packageProductDependencies = (
-				0F1476EA2DD1FEB20085BC1D /* GoogleMobileAds */,
 			);
 			productName = SimpleList;
 			productReference = 0FAB11B22DAE24F9008410D1 /* SimpleList.app */;
@@ -128,7 +122,6 @@
 			mainGroup = 0FAB11A92DAE24F9008410D1;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				0F1476E92DD1FEB20085BC1D /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0FAB11B32DAE24F9008410D1 /* Products */;
@@ -362,25 +355,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		0F1476E92DD1FEB20085BC1D /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 12.4.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		0F1476EA2DD1FEB20085BC1D /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0F1476E92DD1FEB20085BC1D /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0FAB11AA2DAE24F9008410D1 /* Project object */;
 }
