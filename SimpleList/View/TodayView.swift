@@ -14,59 +14,55 @@ struct TodayView: View {
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottomTrailing) {
-                VStack(spacing: 0) {
-                    HStack {
-                        Text(convertDate())
-                        Spacer()
-                    }
-                    .padding()
-                    
-                    if todoVM.todos.isEmpty {
-                        HStack {
-                            Spacer()
-                            
-                            Text("오늘 할 일이 없습니다.")
-                                .foregroundColor(.gray)
-                                .padding()
-                            
-                            Spacer()
-                        }
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.lightGray))
-                        )
-                        .padding()
-                    } else {
-                        List {
-                            ForEach(todoVM.todos) { todo in
-                                TodoRowView(todo: todo) {
-                                    todoVM.toggleTodoCompletion(todo: todo)
-                                } onDelete: {
-                                    todoVM.deleteTodos(todo: todo)
-                                } onEdit: {
-                                    editingTodo = todo
-                                }
-
-                            }
-                        }
-                        .listStyle(.plain)
-                    }
+            VStack(spacing: 0) {
+                HStack {
+                    Text(convertDate())
                     Spacer()
                 }
-                .navigationTitle("오늘 할 일")
-                
-                Button(action: {
-                    showingAddTodo = true
-                }) {
-                    Image(systemName: "plus")
-                        .foregroundStyle(Color(.white))
-                        .padding()
-                        .background(Color(.blue))
-                        .clipShape(Circle())
-                        .shadow(radius: 4)
-                }
                 .padding()
+                
+                if todoVM.todos.isEmpty {
+                    HStack {
+                        Spacer()
+                        
+                        Text("오늘 할 일이 없습니다.")
+                            .foregroundColor(.gray)
+                            .padding()
+                        
+                        Spacer()
+                    }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.lightGray))
+                    )
+                    .padding()
+                } else {
+                    List {
+                        ForEach(todoVM.todos) { todo in
+                            TodoRowView(todo: todo) {
+                                todoVM.toggleTodoCompletion(todo: todo)
+                            } onDelete: {
+                                todoVM.deleteTodos(todo: todo)
+                            } onEdit: {
+                                editingTodo = todo
+                            }
+
+                        }
+                    }
+                    .listStyle(.plain)
+                }
+                Spacer()
+            }
+            .navigationTitle("오늘 할 일")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAddTodo = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
             }
         }
         .sheet(isPresented: $showingAddTodo) {

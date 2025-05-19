@@ -10,6 +10,7 @@ import SwiftUI
 struct AllTodoView: View {
     @EnvironmentObject private var todoVM: TodoViewModel
     @State private var editingTodo: TodoItem?
+    @State private var showingAddTodo: Bool = false
     
     private var groupedTodos: [(Date, [TodoItem])] {
         Dictionary(grouping: todoVM.allTodos) { todo in
@@ -21,8 +22,8 @@ struct AllTodoView: View {
     
     var body: some View {
         NavigationView {
-            if groupedTodos.isEmpty {
-                VStack {
+            VStack {
+                if groupedTodos.isEmpty {
                     HStack {
                         Spacer()
                         
@@ -36,35 +37,49 @@ struct AllTodoView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.lightGray))
                     )
-                    
-                    Spacer()
-                }
-                .padding()
-                .navigationTitle("전체 보기")
-            } else {
-                List {
-                    ForEach(groupedTodos, id: \.0) { date, todos in
-                        Section(header: Text(convertDate(date)).font(.headline)) {
-                            ForEach(todos) { todo in
-                                TodoRowView(todo: todo) {
-                                    todoVM.toggleTodoCompletion(todo: todo)
-                                } onDelete: {
-                                    todoVM.deleteTodos(todo: todo)
-                                } onEdit: {
-                                    editingTodo = todo
-                                }
+                    .padding()
+                } else {
+                    List {
+                        ForEach(groupedTodos, id: \.0) { date, todos in
+                            Section(header: Text(convertDate(date)).font(.headline)) {
+                                ForEach(todos) { todo in
+                                    TodoRowView(todo: todo) {
+                                        todoVM.toggleTodoCompletion(todo: todo)
+                                    } onDelete: {
+                                        todoVM.deleteTodos(todo: todo)
+                                    } onEdit: {
+                                        editingTodo = todo
+                                    }
 
+                                }
                             }
+                            
                         }
-                        
+                    }
+                    .listStyle(.plain)
+                    .onAppear {
+                        todoVM.loadAllTodos()
                     }
                 }
-                .listStyle(.plain)
-                .onAppear {
-                    todoVM.loadAllTodos()
-                }
-                .navigationTitle("전체 보기")
+                
+                Spacer()
             }
+            .navigationTitle("할일 전체 보기")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAddTodo = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
+        }
+        .sheet(isPresented: $showingAddTodo) {
+            AddTodoView()
+                .environmentObject(todoVM)
         }
         .sheet(item: $editingTodo) { todo in
             EditingTodoView(todo: todo)

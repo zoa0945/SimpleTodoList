@@ -11,6 +11,7 @@ struct CalendarView: View {
     @EnvironmentObject private var todoVM: TodoViewModel
     @State private var seletedDate: Date = Date()
     @State private var editingTodo: TodoItem?
+    @State private var showingAddTodo: Bool = false
     
     var todosForSelectedDate: [TodoItem] {
         todoVM.allTodos.filter {
@@ -54,6 +55,21 @@ struct CalendarView: View {
                 }
             }
             .navigationTitle("캘린더")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAddTodo = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
+        }
+        .sheet(isPresented: $showingAddTodo) {
+            AddTodoView()
+                .environmentObject(todoVM)
         }
         .sheet(item: $editingTodo) { todo in
             EditingTodoView(todo: todo)
