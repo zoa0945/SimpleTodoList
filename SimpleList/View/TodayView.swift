@@ -86,7 +86,3 @@ func convertDate() -> String {
     dateFormatter.dateFormat = "yyyy년 MM월 dd일 EEEE"
     return dateFormatter.string(from: today)
 }
-
-#Preview {
-    TodayView()
-}

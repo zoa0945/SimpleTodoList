@@ -49,7 +49,7 @@ struct MainTabView: View {
                     }
             }
             
-            BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
+            BannerAdView(adUnitID: "ca-app-pub-7101308484718255/8194943920")
                 .frame(height: 50)
         }
     }

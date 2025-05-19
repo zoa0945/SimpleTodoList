@@ -94,7 +94,3 @@ struct AllTodoView: View {
         return dateformatter.string(from: date)
     }
 }
-
-#Preview {
-    AllTodoView()
-}
